@@ -3,7 +3,6 @@ package pl.podwikagrzegorz.MovieRentalServer.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.podwikagrzegorz.MovieRentalServer.model.User;
-import pl.podwikagrzegorz.MovieRentalServer.service.ServerResponse;
 import pl.podwikagrzegorz.MovieRentalServer.service.UserService;
 
 @RestController

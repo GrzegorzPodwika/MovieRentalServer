@@ -2,56 +2,59 @@ package pl.podwikagrzegorz.MovieRentalServer.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.podwikagrzegorz.MovieRentalServer.dao.Dao;
 import pl.podwikagrzegorz.MovieRentalServer.dao.MovieRepository;
 import pl.podwikagrzegorz.MovieRentalServer.model.Movie;
-import pl.podwikagrzegorz.MovieRentalServer.utils.CollectionUtils;
+import pl.podwikagrzegorz.MovieRentalServer.utils.ServerResponse;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class MovieService {
+public class MovieService implements Dao<Movie> {
 
-    private final MovieRepository movieRepository;
+    private final MovieRepository repo;
 
     @Autowired
     public MovieService(MovieRepository movieRepository) {
-        this.movieRepository = movieRepository;
+        this.repo = movieRepository;
     }
 
-    public List<Movie> getAllMovies() {
-        return CollectionUtils.makeList(movieRepository.findAll());
+    @Override
+    public int save(Movie movie) {
+        repo.save(movie);
+        return ServerResponse.OK.getCode();
     }
 
-    public int insertMovie(Movie movie) {
-        try {
-            movieRepository.save(movie);
-            return ServerResponse.OK.getCode();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ServerResponse.ERROR.getCode();
-        }
+    @Override
+    public Movie update(Movie movie) {
+        return repo.save(movie);
     }
 
-    public int insertListOfMovies(List<Movie> movies) {
-        try {
-            movieRepository.saveAll(movies);
-            return ServerResponse.OK.getCode();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ServerResponse.ERROR.getCode();
-        }
+    @Override
+    public void delete(Movie movie) {
+        repo.delete(movie);
+    }
+
+    @Override
+    public Optional<Movie> get(Integer id) {
+        return repo.findById(id);
+    }
+
+    @Override
+    public List<Movie> getAll() {
+        return repo.findAll();
     }
 
     public List<Movie> getAllMoviesByQuery(String searchMovie, String genre) {
         List<Movie> queryResult;
 
         if (searchMovie.equals("*")) {
-            queryResult = movieRepository.findAllByGenre(genre);
+            queryResult = repo.findAllByGenre(genre);
         } else if(genre.equals("all")) {
-            queryResult = movieRepository.findAllByNameContaining(searchMovie);
+            queryResult = repo.findAllByNameContaining(searchMovie);
         } else {
-            queryResult = movieRepository.findAllByNameContainingAndGenre(searchMovie, genre);
+            queryResult = repo.findAllByNameContainingAndGenre(searchMovie, genre);
         }
 
         return queryResult;

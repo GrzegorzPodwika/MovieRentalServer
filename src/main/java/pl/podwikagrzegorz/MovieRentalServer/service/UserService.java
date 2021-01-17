@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.podwikagrzegorz.MovieRentalServer.dao.UserRepository;
 import pl.podwikagrzegorz.MovieRentalServer.model.User;
+import pl.podwikagrzegorz.MovieRentalServer.utils.ServerResponse;
 
 @Service
 public class UserService {
@@ -31,15 +32,11 @@ public class UserService {
     }
 
     private boolean searchIfUserAlreadyExist(User user) {
-        var name = user.getUsername();
-        var exist = userRepository.existsByUsername(user.getUsername());
-        System.out.println("name = " + name + " exist = " + exist);
         return userRepository.existsByUsername(user.getUsername());
     }
 
     public String loginUser(User user) {
         var searchUser = userRepository.findUserByUsernameAndPassword(user.getUsername(), user.getPassword());
-        //System.out.println(user + searchUser.toString());
         return searchUser.map(userFound -> userFound.getUserId().toString()).orElse("ERROR");
     }
 

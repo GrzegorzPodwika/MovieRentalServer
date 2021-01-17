@@ -1,4 +1,4 @@
-package pl.podwikagrzegorz.MovieRentalServer.service;
+package pl.podwikagrzegorz.MovieRentalServer.utils;
 
 public enum ServerResponse {
     OK(0), ERROR(1),

@@ -1,10 +1,12 @@
 package pl.podwikagrzegorz.MovieRentalServer.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+
 import javax.persistence.*;
 import java.time.LocalDate;
-
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 @Entity
 public class RentedMovie {
@@ -19,13 +21,17 @@ public class RentedMovie {
     @ManyToOne
     private Movie movie;
 
-    @JsonSerialize(using = ToStringSerializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate rentDate;
 
-    @JsonSerialize(using = ToStringSerializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate returnDate;
 
     private double rentFee;
+
+    private boolean paid;
 
     public User getUser() {
         return user;
@@ -75,6 +81,14 @@ public class RentedMovie {
         this.rentFee = rent_fee;
     }
 
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+
     @Override
     public String toString() {
         return "RentedMovie{" +
@@ -84,6 +98,7 @@ public class RentedMovie {
                 ", rentDate=" + rentDate +
                 ", returnDate=" + returnDate +
                 ", rentFee=" + rentFee +
+                ", isPaid=" + paid +
                 '}';
     }
 }

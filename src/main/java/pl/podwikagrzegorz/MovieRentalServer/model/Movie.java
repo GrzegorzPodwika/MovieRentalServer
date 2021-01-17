@@ -12,13 +12,9 @@ public class Movie {
     private Integer movieId;
 
     private String name;
-
     private String genre;
-
     private String year;
-
     private double rating;
-
     private double feePerDay;
 
     public Integer getMovieId() {
